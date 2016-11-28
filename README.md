@@ -7,8 +7,7 @@ It assumes:
 - You have AWS credential keys
 - You have said AWS credential keys in your ~/.boto file, under the "hubot" profile
 - You have Ansible installed locally
-- You have a public key generated
-- __You add your public key added to roles/aws_ec2_key_pairs/files/hubot_rsa.pub__
+- You have a ssh public key generated
 
 Setup Configuration
 -------------------
@@ -29,6 +28,7 @@ __Create a file in vars/secrets.yml with the following:__
 ---
 aws_api_access_key: accesskey
 aws_api_secret_access_key: secretacesskey
+ssh_public_key: "your_ssh_public_key"
 
 #only needed for hubot slack
 slack_bot_token: slacktoken
