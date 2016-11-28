@@ -7,7 +7,6 @@
     region: "{{ aws_region }}"
     state: present
     name: hubot
-    key_material: "{{ item }}"
-  with_file: hubot_rsa.pub
+    key_material: "{{ ssh_public_key }}"
   register: aws_key_pairs
   
