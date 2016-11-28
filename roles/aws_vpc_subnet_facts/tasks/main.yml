@@ -1,0 +1,29 @@
+---
+
+- name: hubot vpc public subnets
+  ec2_vpc_subnet_facts:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    region: "{{ aws_region }}"
+    filters:
+      vpc-id: "{{ aws_vpc_id }}"
+      "tag:Subnet": Public
+  register: aws_vpc_public_subnets_facts
+
+- name: hubot vpc private subnets
+  ec2_vpc_subnet_facts:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    region: "{{ aws_region }}"
+    filters:
+      vpc-id: "{{ aws_vpc_id }}"
+      "tag:Subnet": Private
+  register: aws_vpc_private_subnets_facts
+
+- name: set vpc public subnets fact
+  set_fact:
+    aws_vpc_public_subnets="{{ aws_vpc_public_subnets_facts.subnets }}"
+
+- name: set vpc private subnets fact
+  set_fact:
+    aws_vpc_private_subnets="{{ aws_vpc_private_subnets_facts.subnets }}"

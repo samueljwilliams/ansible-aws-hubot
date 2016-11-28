@@ -1,0 +1,71 @@
+---
+
+- name: add hubot group
+  group: >
+    name=hubot
+    state=present
+
+- name: add hubot user
+  user: >
+    name=hubot
+    state=present
+
+- name: config DIRs /opt/hubot
+  file: >
+    path=/opt/hubot/{{ item }}
+    state=directory
+    owner=hubot
+    group=hubot
+    mode=0755
+  with_items:
+    - bin
+    - scripts
+
+- name: install coffee-script
+  npm: >
+    name=coffee-script
+    global=True
+
+- name: install hubot and adapter
+  npm: >
+    name={{ item }}
+    path=/opt/hubot
+  become_user: hubot
+  with_items:
+    - hubot
+    - hubot-{{ adapter }}
+
+- name: config /etc/init.d/hubot
+  template: >
+    src=hubot_initd
+    dest=/etc/init.d/hubot
+    owner=root
+    group=root
+    mode=0755
+  notify: restart hubot
+
+- name: config /opt/hubot/*
+  template: >
+    src="{{ item }}"
+    dest=/opt/hubot/{{ item }}
+    owner=hubot
+    group=hubot
+    mode=0644
+  notify: restart hubot
+  with_items:
+    - hubot.env
+
+- name: config /opt/hubot/bin/*
+  template: >
+    src="{{ item }}"
+    dest=/opt/hubot/bin/{{ item }}
+    owner=hubot
+    group=hubot
+    mode=0755
+  with_items:
+    - hubot.sh
+
+- name: enable hubot service
+  service: >
+    name=hubot
+    enabled=True

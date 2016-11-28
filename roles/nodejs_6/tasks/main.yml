@@ -1,0 +1,15 @@
+---
+  
+- name: add NodeSource repository for Node.js 6.0
+  yum: >
+    name=https://rpm.nodesource.com/pub_6.x/el/6/x86_64/nodesource-release-el6-1.noarch.rpm
+    state=present
+  tags: hubot
+
+- name: install needed yum packages
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - nodejs
+    

@@ -1,0 +1,11 @@
+---
+- name: copy coffee scripts
+  template: >
+    src={{ item }}
+    dest=/opt/hubot/scripts/{{ item | basename }}
+    owner=hubot
+    group=hubot
+    mode=0750
+  with_fileglob: "{{ playbook_dir }}/roles/bot/templates/scripts/*.coffee"
+  notify: restart hubot
+  tags: bot_scripts

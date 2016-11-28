@@ -1,0 +1,11 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - vars/secrets.yml
+  roles:
+    - aws_vpc_facts
+    - aws_vpc_subnet_facts
+    - aws_ec2

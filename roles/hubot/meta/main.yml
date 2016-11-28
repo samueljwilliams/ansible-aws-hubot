@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: redis }
+  - { role: develop_tools }
+  - { role: nodejs_6 }

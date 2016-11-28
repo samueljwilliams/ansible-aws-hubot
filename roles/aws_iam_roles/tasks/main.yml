@@ -1,0 +1,11 @@
+---
+
+- name: Create IAM role with custom trust relationship
+  iam:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    name: "{{ item.name }}"
+    iam_type: role
+    state: present
+  register: aws_iam_roles
+  with_items: "{{ aws_iam_roles_vars }}"

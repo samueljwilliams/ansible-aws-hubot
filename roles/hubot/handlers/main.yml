@@ -1,0 +1,5 @@
+---
+
+- name : restart hubot
+  service: name=hubot state=restarted
+  tags: hubot

@@ -1,0 +1,27 @@
+---
+
+- name: set random subnet
+  set_fact:
+    pub_subnet="{{ aws_vpc_public_subnets | random }}"
+
+- name: create nat gateway
+  ec2_vpc_nat_gateway:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    state: present
+    subnet_id: "{{ pub_subnet.id }}"
+    wait: yes
+    region: "{{ aws_region }}"
+    if_exist_do_not_create: true
+  register: new_nat_gateway
+
+- name: modify private subnet
+  ec2_vpc_route_table:
+    vpc_id: "{{ aws_vpc.vpc_id }}"
+    region: "{{ aws_region }}"
+    subnets:
+      - "{{ item.id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ new_nat_gateway.nat_gateway_id }}"
+  with_items: "{{ aws_vpc_private_subnets }}"

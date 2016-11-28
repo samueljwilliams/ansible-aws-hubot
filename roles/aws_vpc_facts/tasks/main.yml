@@ -1,0 +1,14 @@
+---
+
+- name: hubot vpc
+  ec2_vpc_net_facts:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    region: "{{ aws_region }}"
+    filters:
+      "tag:Name": hubot
+  register: aws_vpc_facts
+
+- name: set vpc id fact
+  set_fact:
+    aws_vpc_id="{{ aws_vpc_facts.vpcs[0].id }}"

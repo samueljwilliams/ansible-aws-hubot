@@ -1,0 +1,13 @@
+---
+
+- name: hubot key pair
+  ec2_key:
+    aws_access_key: "{{ aws_api_access_key }}"
+    aws_secret_key: "{{ aws_api_secret_access_key }}"
+    region: "{{ aws_region }}"
+    state: present
+    name: hubot
+    key_material: "{{ item }}"
+  with_file: hubot_rsa.pub
+  register: aws_key_pairs
+  

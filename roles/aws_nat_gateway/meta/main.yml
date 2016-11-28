@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: aws_vpc }
+  - { role: aws_vpc_facts }
+  - { role: aws_subnet_facts }
